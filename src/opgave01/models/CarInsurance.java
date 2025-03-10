@@ -1,14 +1,16 @@
 package opgave01.models;
 
 public class CarInsurance {
-    private final double basisPremium; // invariant: basisPremium > 0.
+    private double basisPremium; // invariant: basisPremium > 0.
+
     /**
      * Create a CarInsurance.
      * Pre: basisPremium > 0.
      */
-    public CarInsurance (double basisPremium) {
+    public CarInsurance(double basisPremium) {
         this.basisPremium = basisPremium;
     }
+
     /**
      * Calculate and return a premium based of the following rules:
      * - person with age below 25: 25% is added to the basis premium,
@@ -22,8 +24,27 @@ public class CarInsurance {
      * or YearsWithoutDamage > age-18.
      */
     public double calculatePremium(int age, boolean isWoman, int yearsWithoutDamage) {
-        //TODO
-        return 0;
+        if (age < 18 || yearsWithoutDamage < 0 || yearsWithoutDamage > age - 18) {
+            throw new RuntimeException("Invalid input");
+        }
+
+        if (age < 25) {
+            basisPremium *= 1.25;
+        }
+
+        if (isWoman) {
+            basisPremium *= 0.95;
+        }
+
+        if (yearsWithoutDamage >= 3 && yearsWithoutDamage <= 5) {
+            basisPremium *= 0.85;
+        } else if (yearsWithoutDamage >= 6 && yearsWithoutDamage <= 8) {
+            basisPremium *= 0.75;
+        } else if (yearsWithoutDamage > 8) {
+            basisPremium *= 0.65;
+        }
+
+        return basisPremium;
     }
 }
 
